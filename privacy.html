@@ -1,8 +1,34 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Privacy | FixHub</title><meta name="description" content="How FixHub handles your files and data: your spreadsheet is processed in your browser and is never uploaded."><style>body{font:16px/1.6 system-ui,sans-serif;color:#211b36;background:#f7f6fb;margin:0}main{max-width:760px;margin:auto;padding:28px 20px 60px}h1{letter-spacing:-.03em}h2{margin-top:28px;font-size:1.2rem}a{color:#42269e}</style></head><body><main>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Privacy | FixHub</title><meta name="description" content="How FixHub handles your files and data: your spreadsheet is processed in your browser and is never uploaded."><style>body{font:16px/1.6 system-ui,sans-serif;color:#211b36;background:#f7f6fb;margin:0}main{max-width:760px;margin:auto;padding:28px 20px 60px}h1{letter-spacing:-.03em}h2{margin-top:28px;font-size:1.2rem}a{color:#42269e}
+/* Ordinary page text remains selectable with the arrow pointer. */
+html, body {
+  cursor: default;
+  caret-color: transparent;
+}
+:read-write {
+  cursor: text;
+  caret-color: auto;
+}
+a[href], button:enabled, select:enabled, label.ck,
+input[type="checkbox"]:enabled, input[type="radio"]:enabled {
+  cursor: pointer;
+}
+</style></head><body><main>
 <p><a href="index.html">Back to FixHub</a></p><h1>Privacy</h1><p>Last updated: November 2026</p>
 <h2>Your files</h2><p>FixHub opens and cleans your spreadsheet inside your own web browser. Your file and its contents are not uploaded, stored or shared by us. When you close or reload the page, the data is gone.</p>
 <h2>Accounts</h2><p>There is no sign-up and no login. We do not collect your name or email address through the tool.</p>
 <h2>Technical data and third parties</h2><p>This site is hosted by a third-party hosting provider, which may keep standard server logs such as IP addresses. The page also loads two open-source code libraries from public content delivery networks (cdnjs and jsDelivr), which may log requests as well.</p>
 <h2>Cookies and ads</h2><p>The tool itself does not use cookies. If we show advertising or use analytics in the future (for example Google AdSense or Google Search Console), those providers may use cookies or similar technologies, and we will update this page before doing so.</p>
 <h2 id="contact">Contact</h2><p>Questions or feedback: <a href="mailto:itonysteve526@gmail.com">itonysteve526@gmail.com</a></p>
-</main></body></html>
+</main>
+<script>
+document.addEventListener('click', function (event) {
+  // Clear a single click's insertion point in static text; keep drag selections.
+  if (event.detail !== 1 || event.button !== 0 || event.shiftKey) return;
+  if (!(event.target instanceof Element) || event.target.matches(':read-write')) return;
+  const selection = window.getSelection();
+  if (selection && selection.rangeCount && selection.isCollapsed) {
+    selection.removeAllRanges();
+  }
+}, true);
+</script>
+</body></html>
