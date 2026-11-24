@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <title>Clean One Column in Excel Without Changing the Rest of Your Sheet</title>
-<meta name="description" content="Choose only the column you want to clean. Everything else stays untouched. Copy the cleaned column back into your original Excel file to keep your formatting and formulas.">
+<meta name="description" content="Choose only the column you want to clean. Everything else stays untouched. Check formula cells before copying a cleaned column back into Excel.">
 <style>
 :root{color-scheme:light;--ink:#211b36;--mu:#635d74;--ln:#e6e1ee;--ac:#5737bf;--dk:#42269e;--tint:#f2edff;--bad:#fde7e4;--warn:#fff3d6;font:15px/1.5 system-ui,sans-serif;color:var(--ink);background:#f7f6fb}
 *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0}
@@ -62,21 +62,24 @@ nav.top{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;font-weight:500}na
 <div class="layout">
 <div class="stack">
 <section class="card"><h2>Spreadsheet</h2>
+<label class="ck"><input type="checkbox" id="headers" checked>First row contains headings</label>
+<p class="sm mu">Choose this setting before opening a file. For a list that starts with data, clear the box.</p>
 <div class="drop" id="drop"><button id="open" class="p" type="button">Choose CSV or XLSX</button><span class="sm mu">or drop a file here</span><button id="sample" type="button">Try a sample sheet</button><input id="file" type="file" accept=".csv,.xlsx" hidden></div>
 <p class="sm mu" id="fname" style="margin-top:8px" role="status"></p>
 <label id="sheetbox" hidden style="display:block;margin-top:8px" class="sm">Worksheet<select id="sheet"></select></label>
 <p class="err" id="err" role="alert" hidden></p></section>
 <section class="card" id="scope" hidden><h2>What to clean</h2>
-<label class="ck"><input type="radio" name="mode" id="modeAll" checked>Whole sheet</label>
-<label class="ck"><input type="radio" name="mode" id="modeCol">Only the columns I choose</label>
+<label class="ck"><input type="radio" name="mode" id="modeAll">Whole sheet</label>
+<label class="ck"><input type="radio" name="mode" id="modeCol" checked>Only the columns I choose</label>
 <div id="colbox" hidden><p class="sm mu" style="margin-top:8px">Only the ticked columns are checked and changed. No rows are deleted, and every other cell stays exactly as it is.</p><div id="colpick" style="max-height:170px;overflow:auto"></div></div></section>
 <section class="card" id="settings" hidden><h2>Phone settings</h2>
 <label class="sm" style="display:block;margin-top:8px">Default country (for numbers without +)<select id="country"></select></label>
-<p class="sm mu" style="margin-top:10px">Phone columns:</p><div id="pcols"></div></section>
+<p class="sm mu" style="margin-top:10px">Tick the columns that contain phone numbers.</p><div id="pcols"></div></section>
 </div>
 <div class="stack">
 <section class="card empty" id="empty"><h2>No sheet yet</h2><p class="mu sm">Upload a file or try the sample to see the fault dashboard.</p></section>
 <div class="stack" id="dash" hidden>
+<p class="card sm" id="formulaNotice" hidden>This workbook contains formulas. Review duplicate and empty rows here and remove them in Excel so references update with the rows.</p>
 <div class="tiles" id="tiles"></div>
 <div class="msg" id="msg" role="status" hidden></div>
 <div class="cards" id="cards"></div>
@@ -86,17 +89,17 @@ nav.top{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;font-weight:500}na
 <div><h2 id="tt">Rows</h2><p class="sm mu" id="tn"></p></div>
 <div style="display:flex;gap:6px;flex-wrap:wrap"><button id="pgm" type="button">Earlier rows</button><button id="pgp" type="button">Later rows</button><button id="undo" type="button">Undo</button><button id="reset" type="button">Reset to original</button><button id="fixall" class="p" type="button">Fix all</button><button id="dl" type="button">Download all sheets (XLSX)</button></div></div>
 <div class="ts" id="ts" tabindex="0" role="region" aria-label="Sheet rows"><table id="tb"></table></div>
-<p class="sm mu" style="margin-top:8px">Download includes every sheet. Colors, borders, charts and images are not kept. Formulas you did not change stay formulas, unless rows were deleted. To keep your formatting exactly, use "What to clean: only the columns I choose" and copy the cleaned column into your original file.</p></section>
+<p class="sm mu" style="margin-top:8px">Download includes every sheet. Colors, borders, charts and images are not kept. Workbooks with formulas keep their rows in place. To keep your original formatting, paste cleaned values only into the cells you want to update. Pasting over a formula replaces it.</p></section>
 </div></div></div>
 </main>
 <section class="wrap seo"><h2>When you only need to fix one column</h2>
 <p>Often only one column is messy, such as phone numbers or emails, while the rest of the sheet has colors, formulas and layout you do not want to touch. FixHub has a mode made for this.</p>
 <h2>How to clean one column</h2>
-<ol><li>Choose your file above.</li><li>Under "What to clean", select "Only the columns I choose" and tick your column.</li><li>Fix the problems the tool finds in that column.</li><li>Press "Copy column" and paste it into your original Excel file, in the same column at the first data row.</li></ol>
+<ol><li>Choose your file above.</li><li>Under "What to clean", tick the column you want to clean.</li><li>Fix the problems the tool finds in that column.</li><li>Press "Copy column" and paste it into your original Excel file, in the same column at the first data row.</li></ol>
 <h2>What this mode does and does not do</h2>
-<ul><li>Only the ticked columns are checked and changed.</li><li>No rows are deleted, so everything stays lined up.</li><li>Cells that contain formulas are skipped and never changed.</li><li>Pasting the copied column into your original file keeps your formatting, formulas and other sheets exactly as they were.</li></ul>
-<p>You can also download the file, but the downloaded file does not keep colors, borders, charts or images. Copying the column back is the safest way to keep everything.</p>
-<h2>Frequently asked questions</h2><h3>Does it change my other columns?</h3><p>No. In this mode only the columns you tick are checked or changed.</p><h3>Does it change formulas?</h3><p>No. Cells with formulas are skipped. If a column you copy back contains formulas, the tool warns you that pasting turns them into plain values.</p><h3>Can I clean more than one column?</h3><p>Yes. Tick as many columns as you need and copy each one back.</p><h3>Is my file uploaded anywhere?</h3><p>No. Your file is opened and cleaned inside your own browser. It is never sent to a server.</p></section>
+<ul><li>Only the ticked columns are checked and changed.</li><li>No rows are deleted, so everything stays lined up.</li><li>The cleaner skips cells that contain formulas.</li><li>The clipboard contains values. Pasting a full column over formula cells replaces their formulas.</li></ul>
+<p>You can also download the file, but the downloaded file does not keep colors, borders, charts or images. To keep both formulas and formatting in the original file, paste only the changed values into non-formula cells.</p>
+<h2>Frequently asked questions</h2><h3>Does it change my other columns?</h3><p>No. In this mode only the columns you tick are checked or changed.</p><h3>Does it change formulas?</h3><p>Cleaning skips formula cells. Before you copy a column containing formulas, FixHub shows a warning. Pasting over those cells replaces their formulas with values.</p><h3>Can I clean more than one column?</h3><p>Yes. Tick as many columns as you need and copy each one back.</p><h3>Is my file uploaded anywhere?</h3><p>No. Your file is opened and cleaned inside your own browser. It is never sent to a server.</p></section>
 <footer class="wrap"><div class="foot"><a href="remove-duplicates-excel.html">Remove duplicates</a><a href="fix-phone-numbers-excel.html">Fix phone numbers</a><a href="clean-excel-column.html">Clean one column</a><a href="privacy.html">Privacy</a><span>FixHub. Free tools that fix messy files.</span></div></footer>
 <script>
 window.addEventListener('DOMContentLoaded',()=>{
@@ -105,7 +108,9 @@ const codes=new Set(P?.getCountries()??[]),names=new Intl.DisplayNames(['en'],{t
 $('country').add(new Option('Select a country',''));
 [...codes].map(c=>[c,names.of(c)]).sort((a,b)=>a[1].localeCompare(b[1],'en')).forEach(([c,n])=>$('country').add(new Option(`${n} (${c})`,c)));
 const reg=(navigator.language||'').split('-')[1]?.toUpperCase();if(codes.has(reg))$('country').value=reg;
-let H=[],R=[],orig=[],hist=[],ign=new Set(),startCol=0,rowBase=0,ws=null,colMode=false,sel=new Set(),curName='',sheets=new Map(),faults=[],cur={id:null,i:0},pcols=new Set(),ecols=new Set(),fname='',win=0,go=false;
+const defaultColumnMode=$('modeCol').defaultChecked;
+let book=null, workbookHasFormulas=false, hasHeadings=true, importVersion=0;
+let H=[],R=[],orig=[],hist=[],ign=new Set(),startCol=0,rowBase=0,ws=null,colMode=defaultColumnMode,sel=new Set(),curName='',sheets=new Map(),faults=[],cur={id:null,i:0},pcols=new Set(),ecols=new Set(),fname='',win=0,go=false;
 const blank=v=>v==null||(typeof v==='string'&&!v.trim());
 const clean=v=>v.trim().replace(/[^\S\r\n]{2,}/gu,' ');
 const pad=n=>String(n).padStart(2,'0');
@@ -152,9 +157,18 @@ function audit(){
   fB=mk('blank','Missing values','Empty cells in rows that have other data. Go to each one and type a value.',0);
  const gmap=new Map(),cc=$('country').value;
  R.forEach((row,ri)=>{
-  if(row.cells.every(blank)){if(!colMode)fE.rows.add(ri);return}
-  const k=JSON.stringify(row.cells.map(norm));
-  if(!colMode)(gmap.get(k)||gmap.set(k,[]).get(k)).push(ri);
+  const empty=row.cells.every((v,ci)=>blank(v) && !isF(ri,ci));
+  if(empty){if(!colMode)fE.rows.add(ri);return}
+  if(!colMode){
+   const key=JSON.stringify(row.cells.map((v,ci)=>{
+    const formula=formulaCell(ri,ci);
+    if(formula)return ['formula',formula.f||'',formula.F||''];
+    if(v instanceof Date)return ['date',v.getTime()];
+    return [typeof v,norm(v)];
+   }));
+   if(!gmap.has(key))gmap.set(key,[]);
+   gmap.get(key).push(ri);
+  }
   row.cells.forEach((v,ci)=>{
    const key=ri+'|'+ci;
    if(colMode&&!sel.has(ci))return;
@@ -166,6 +180,13 @@ function audit(){
   });
  });
  fD.groups=[...gmap.values()].filter(g=>g.length>1);fD.groups.forEach(g=>{g.slice(1).forEach(r=>fD.rows.add(r));g.forEach(r=>fD.members.add(r))});
+ if(workbookHasFormulas){
+  for(const fault of [fE,fD]){
+   fault.fix=false;
+   fault.reviewInExcel=true;
+   fault.desc='Review these rows in Excel. Row deletion is disabled to keep workbook formula references intact.';
+  }
+ }
  faults=[fE,fD,fS,fP,fI,fM,fB].filter(f=>(f.count=f.id==='dup'?f.groups.length:(f.rows.size||f.cells.size))>0);
  faults.forEach(f=>f.items=f.id==='dup'?f.groups.map(g=>({ri:g[0],ci:-1,group:g})):f.rows.size?[...f.rows].sort((a,b)=>a-b).map(ri=>({ri,ci:-1})):[...f.cells].map(k=>{const[ri,ci]=k.split('|').map(Number);return{ri,ci}}).sort((a,b)=>a.ri-b.ri||a.ci-b.ci));
  const af=faults.find(f=>f.id===cur.id);
@@ -181,6 +202,7 @@ function reasonOf(f,it){
  return{empty:'This row has no data.',dup:'All these rows hold the same data. Keep one and delete the rest.',space:'Extra spaces in this cell.',pfmt:'A valid number, but written differently from the standard +countrycode format.',pbad:whyBad(v,$('country').value),mail:'This does not look like an email address (check @ and the domain).',blank:'This cell is empty.'}[f.id];
 }
 function applyFix(f,it,val){
+ if(f.reviewInExcel)return;
  const cc=$('country').value;snap();
  if(it.group)it.group.filter(r=>r!==val).sort((a,b)=>b-a).forEach(r=>R.splice(r,1));
  else if(it.ci<0)R.splice(it.ri,1);
@@ -192,6 +214,7 @@ function applyFix(f,it,val){
  go=true;render();
 }
 function fixType(f){
+ if(!f.fix)return;
  if(f.rows.size)[...f.rows].sort((a,b)=>b-a).forEach(ri=>R.splice(ri,1));
  else f.items.forEach(({ri,ci})=>{const v=R[ri].cells[ci];R[ri].cells[ci]=f.id==='space'?(pcols.has(ci)?noSp(v):clean(v)):(phone(v,$('country').value)||v)});
 }
@@ -199,12 +222,16 @@ function step(d){const f=af_();if(!f)return;cur.keep=null;cur.i=(cur.i+d+f.items
 
 function render(){
  const has=H.length>0;$('dash').hidden=!has;$('empty').hidden=has;$('settings').hidden=!has;$('scope').hidden=!has;
+ $('formulaNotice').hidden=!has||!workbookHasFormulas||colMode;
  if(!has)return;
+ const awaitingColumn=colMode && sel.size===0;
+ $('fixall').disabled=awaitingColumn;
+ $('fixall').textContent=colMode?'Fix selected columns':'Fix all';
  const flagged=new Set(),all=new Set();
  faults.forEach(f=>{f.items.forEach(x=>flagged.add(x.ri));f.rows.forEach(r=>flagged.add(r));f.cells.forEach(k=>all.add(k))});
  const total=faults.reduce((a,f)=>a+f.count,0);
  $('tiles').replaceChildren();
- [['Rows',R.length],['Columns',H.length],['Faults found',total],['Clean rows',R.length?Math.round((R.length-flagged.size)/R.length*100)+'%':'0%']].forEach(([l,v])=>{
+ [['Rows',R.length],['Columns',H.length],['Faults found',awaitingColumn?'—':total],['Clean rows',awaitingColumn?'—':(R.length?Math.round((R.length-flagged.size)/R.length*100)+'%':'0%')]].forEach(([l,v])=>{
   const d=el('div','tile'),b=el('b',0,v);d.append(b,el('span',0,l));$('tiles').append(d)});
  $('cards').replaceChildren();
  if(!faults.length)$('cards').append(el('p','msg',colMode&&!sel.size?'Tick at least one column on the left to check it.':'No faults found. This sheet looks clean.'));
@@ -214,18 +241,26 @@ function render(){
   const r=el('div','row');
   const g=el('button',0,cur.id===f.id?`Next (${cur.i+1} of ${f.count})`:'Go to first');g.type='button';g.onclick=e=>{e.stopPropagation();card(f)};r.append(g);
   if(f.fix){const x=el('button','p',`Fix all ${f.count}`);x.type='button';x.onclick=e=>{e.stopPropagation();snap();fixType(f);say(`Fixed ${f.count} in "${f.title}".`);audit();render()};r.append(x)}
-  else{const x=el('button','p',`Mark all ${f.count} as reviewed`);x.type='button';x.onclick=e=>{e.stopPropagation();ignoreItems(f.id,f.items)};r.append(x)}
+  else if(!f.reviewInExcel){const x=el('button','p',`Mark all ${f.count} as reviewed`);x.type='button';x.onclick=e=>{e.stopPropagation();ignoreItems(f.id,f.items)};r.append(x)}
   d.append(h,el('p','sm mu',f.desc),el('span','tag',f.fix?'CAN BE FIXED':'NEEDS YOUR INPUT'),r);d.onclick=()=>card(f);$('cards').append(d);
  });
  $('copybox').hidden=!(colMode&&sel.size);$('copybtns').replaceChildren();
  if(colMode&&sel.size){
-  const bad=R.length!==orig.length,first=R[0]?R[0].n:2;
+  const bad=R.length!==orig.length,first=rowBase+(hasHeadings?2:1);
   $('copynote').textContent=bad?'Rows were deleted earlier on this sheet, so a copy would not line up. Press Reset to original first.':'Copy a cleaned column, then paste it into your original Excel file at the first data row. Only that column changes.';
   if(!bad)[...sel].sort((a,b)=>a-b).forEach(ci=>{
    const nf=R.filter((_,ri)=>isF(ri,ci)).length,at=colL(startCol+ci)+first;
    const b=el('button','p',`Copy column ${colL(startCol+ci)} (${lab(ci)})`);b.type='button';
    b.onclick=async()=>{const ok=await copyText(R.map(r=>txt(r.cells[ci])).join('\n'));say(ok?`Copied. Paste it into cell ${at} of your original file.${nf?` Note: ${nf} formula cells in this column will become plain values when pasted.`:''}`:'Copy failed. Allow clipboard access or try another browser.')};
-   $('copybtns').append(b);
+   const group=el('div');
+   if(nf){
+    const warning=el('p','sm',`Column ${colL(startCol+ci)} contains ${nf} formula ${nf===1?'cell':'cells'}. Pasting this column replaces those formulas with values. To keep formulas, paste only into non-formula cells.`);
+    warning.id='copy-warning-'+ci;
+    b.setAttribute('aria-describedby',warning.id);
+    group.append(warning);
+   }
+   group.append(b);
+   $('copybtns').append(group);
   });
  }
  const af=af_(),it=af&&af.items[cur.i];
@@ -233,11 +268,13 @@ function render(){
  if(it){
   const v=R[it.ri].cells[it.ci];
   pn.append(el('h2',0,`${af.title}: ${cur.i+1} of ${af.items.length}`));
-  pn.append(el('p',0,it.group?`${it.group.length} identical rows: ${it.group.map(r=>R[r].n).join(', ')}`:it.ci<0?`Row ${R[it.ri].n}`:`Row ${R[it.ri].n}, column ${colL(it.ci)} (${lab(it.ci)})`));
+  pn.append(el('p',0,it.group?`${it.group.length} identical rows: ${it.group.map(r=>R[r].n).join(', ')}`:it.ci<0?`Row ${R[it.ri].n}`:`Row ${R[it.ri].n}, column ${colL(startCol+it.ci)} (${lab(it.ci)})`));
   if(it.ci>=0){const p=el('p');p.append('Current value: ');const c=el('code',0,txt(v)===''?'(empty)':txt(v));p.append(c);pn.append(p)}
-  pn.append(el('p','sm mu','Why: '+reasonOf(af,it)));
+  pn.append(el('p','sm mu',af.reviewInExcel?af.desc:'Why: '+reasonOf(af,it)));
   const row=el('div','row');
-  if(af.id==='dup'){
+  if(af.reviewInExcel){
+   row.append(el('span','sm','The highlighted row numbers match the original worksheet.'));
+  }else if(af.id==='dup'){
    let keep=it.group.includes(cur.keep)?cur.keep:it.group[0];
    const w=el('div','ts'),t=el('table'),hd=t.createTHead().insertRow();w.style.maxHeight='240px';
    ['Keep','Row',...H.map((_,i)=>lab(i))].forEach(x=>{const th=el('th',0,x);hd.append(th)});
@@ -289,18 +326,20 @@ function render(){
 function ignoreItems(type,items){snap();items.forEach(x=>ign.add(type+':'+R[x.ri].n+'|'+x.ci));say(`Marked ${items.length} as reviewed. They are left unchanged in your file. Undo brings them back.`);audit();render()}
 function card(f){if(cur.id===f.id){cur.i=(cur.i+1)%f.items.length;cur.keep=null}else cur={id:f.id,i:0};go=true;render()}
 function load(h,rows,name){
- H=h;R=rows.map((c,i)=>({n:rowBase+i+2,cells:c}));orig=R.map(r=>({n:r.n,cells:r.cells.slice()}));
- pcols=new Set();ecols=new Set();cur={id:null,i:0};hist=[];ign=new Set();colMode=false;sel=new Set();win=0;say('');
+ H=h;R=rows.map((c,i)=>({n:rowBase+i+(hasHeadings?2:1),cells:c}));orig=R.map(r=>({n:r.n,cells:r.cells.slice()}));
+ pcols=new Set();ecols=new Set();cur={id:null,i:0};hist=[];ign=new Set();colMode=defaultColumnMode;sel=new Set();win=0;say('');
+ if(!book && name==='Sample sheet')pcols.add(1);
  H.forEach((x,ci)=>{
-  const vals=R.map(r=>r.cells[ci]).filter(v=>!blank(v));
-  const hit=/phone|mobile|cell|whatsapp|\btel\b|contact/i.test(String(x));
-  const ph=vals.filter(v=>/^\+?[0-9().\s-]{7,}$/.test(String(v).trim())).length;
-  if(vals.length&&(hit||ph/vals.length>=.6))pcols.add(ci);
   if(/e-?mail/i.test(String(x)))ecols.add(ci);
  });
  buildLists();$('fname').textContent=name;audit();render();saveState();
 }
-const isF=(ri,ci)=>{if(!ws)return false;const c=ws[X.utils.encode_cell({r:R[ri].n-1,c:startCol+ci})];return !!(c&&c.f)};
+function formulaCell(ri,ci){
+ if(!workbookHasFormulas || !ws)return null;
+ const cell=ws[X.utils.encode_cell({r:R[ri].n-1,c:startCol+ci})];
+ return cell && (cell.f || cell.F) ? cell : null;
+}
+const isF=(ri,ci)=>Boolean(formulaCell(ri,ci));
 function saveState(){if(curName)sheets.set(curName,{H,R,orig,hist,ign,pcols,ecols,startCol,rowBase,ws,colMode,sel})}
 function buildLists(){
  $('pcols').replaceChildren();$('colpick').replaceChildren();
@@ -316,21 +355,44 @@ async function copyText(t){
  try{await navigator.clipboard.writeText(t);return true}
  catch{const a=el('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.append(a);a.select();let ok=false;try{ok=document.execCommand('copy')}catch{}a.remove();return ok}
 }
+function readSheet(sheet,withHeadings){
+ if(!sheet || !sheet['!ref'])return null;
+ const range=X.utils.decode_range(sheet['!ref']);
+ const width=range.e.c-range.s.c+1;
+ const values=X.utils.sheet_to_json(sheet,{header:1,raw:true,defval:'',blankrows:true});
+ if(!values.length)return null;
+ const rows=values.map(row=>Array.from({length:width},(_,i)=>row[i]??''));
+ const headings=withHeadings?rows.shift():Array(width).fill('');
+ return {headings,rows,range,sheet};
+}
+function showSheet(data){
+ if(!data){
+  H=[];R=[];orig=[];ws=null;hist=[];faults=[];
+  $('fname').textContent=fname;err('This worksheet is empty.');render();return;
+ }
+ ws=data.sheet;startCol=data.range.s.c;rowBase=data.range.s.r;
+ err('');load(data.headings,data.rows,fname);
+}
 function pick(){
  saveState();
- const name=$('sheet').value;curName=name;
- const st=sheets.get(name);
- if(st){({H,R,orig,hist,ign,pcols,ecols,startCol,rowBase,ws,colMode,sel}=st);cur={id:null,i:0};win=0;say('');err('');buildLists();audit();render();return}
- const w0=book.Sheets[name];
- const v=X.utils.sheet_to_json(w0,{header:1,raw:true,defval:'',blankrows:true});
- if(!v.length||!w0['!ref']){H=[];R=[];orig=[];faults=[];err('This worksheet is empty.');render();return}
- const rg=X.utils.decode_range(w0['!ref']);ws=w0;startCol=rg.s.c;rowBase=rg.s.r;
- const w=v.reduce((m,r)=>Math.max(m,r.length),0),rc=r=>Array.from({length:w},(_,i)=>r[i]??'');
- err('');load(rc(v[0]),v.slice(1).map(rc),fname);
+ curName=$('sheet').value;
+ const st=sheets.get(curName);
+ if(st){
+  ({H,R,orig,hist,ign,pcols,ecols,startCol,rowBase,ws,colMode,sel}=st);
+  cur={id:null,i:0};win=0;say('');err(H.length?'':'This worksheet is empty.');buildLists();audit();render();return;
+ }
+ showSheet(readSheet(book.Sheets[curName],hasHeadings));
 }
 function buildSheet(st){
- const same=st.ws&&st.R.length===st.orig.length&&st.R.every((r,i)=>r.n===st.orig[i].n);
- if(!same)return X.utils.aoa_to_sheet([st.H.map(txt),...st.R.map(r=>r.cells.map(v=>v instanceof Date?txt(v):v))]);
+ const same=st.ws && st.R.length===st.orig.length && st.R.every((r,i)=>r.n===st.orig[i].n);
+ if(!same){
+  const rows=st.R.map(r=>r.cells);
+  if(hasHeadings)rows.unshift(st.H);
+  const sheet={};
+  X.utils.sheet_add_aoa(sheet,rows,{origin:{r:st.rowBase,c:st.startCol},cellDates:true});
+  if(rows.length)sheet['!ref']=X.utils.encode_range({s:{r:st.rowBase,c:st.startCol},e:{r:st.rowBase+rows.length-1,c:st.startCol+st.H.length-1}});
+  return sheet;
+ }
  const w=Object.assign({},st.ws);
  st.R.forEach((r,i)=>r.cells.forEach((v,ci)=>{
   const o=st.orig[i].cells[ci];
@@ -341,20 +403,48 @@ function buildSheet(st){
  }));
  return w;
 }
-let book;
+function inspectFormulas(workbook){
+ let found=false;
+ for(const name of workbook.SheetNames){
+  const sheet=workbook.Sheets[name];
+  for(const address in sheet){
+   const cell=sheet[address];
+   if(address.startsWith('!') || !(cell.f || cell.F))continue;
+   found=true;
+   // SheetJS represents formulas without a cached result as stub cells.
+   // Use a numeric formula cell with no value so it is written to the XLSX.
+   if(cell.t==='z' && cell.f){cell.t='n';delete cell.v;}
+  }
+ }
+ return found;
+}
 async function open_(file){
- if(!file)return;fname=file.name;err('');
+ if(!file)return;
+ const request=++importVersion;
+ const withHeadings=$('headers').checked;
  try{
-  if(!/\.(csv|xlsx)$/i.test(fname))throw new Error('Choose a .csv or .xlsx file.');
+  const name=file.name;
+  if(!/\.(csv|xlsx)$/i.test(name))throw new Error('Choose a .csv or .xlsx file.');
   if(!X||!P)throw new Error('A library could not load. Connect to the internet and reload this page.');
-  const b=new Uint8Array(await file.arrayBuffer()),csv=/\.csv$/i.test(fname);
-  if(!csv&&(b[0]!==0x50||b[1]!==0x4b))throw new Error('This file could not be read as XLSX.');
-  const d=csv?new TextDecoder().decode(b):b;
-  if(csv&&!d.trim())throw new Error('This CSV file is empty.');
-  book=X.read(d,{type:csv?'string':'array',raw:true,cellDates:true,cellFormula:true});
-  $('sheet').replaceChildren(...book.SheetNames.map(n=>new Option(n,n)));
-  sheets.clear();curName='';$('sheetbox').hidden=book.SheetNames.length<2;pick();
- }catch(e){err(e.message||'Could not open the file.')}
+  const bytes=new Uint8Array(await file.arrayBuffer());
+  if(request!==importVersion)return;
+  const csv=/\.csv$/i.test(name);
+  if(!csv && (bytes[0]!==0x50 || bytes[1]!==0x4b))throw new Error('This file could not be read as XLSX.');
+  const data=csv?new TextDecoder().decode(bytes):bytes;
+  if(csv && !data.trim())throw new Error('This CSV file is empty.');
+  const incoming=X.read(data,{type:csv?'string':'array',raw:true,cellDates:true,cellFormula:true,sheetStubs:!csv});
+  const visible=incoming.SheetNames.filter((_,i)=>!incoming.Workbook?.Sheets?.[i]?.Hidden);
+  if(!visible.length)throw new Error('This workbook has no visible worksheets.');
+  const formulas=inspectFormulas(incoming);
+  const first=readSheet(incoming.Sheets[visible[0]],withHeadings);
+  const options=visible.map(n=>new Option(n,n));
+  book=incoming;fname=name;workbookHasFormulas=formulas;hasHeadings=withHeadings;
+  sheets.clear();curName=visible[0];
+  $('sheet').replaceChildren(...options);$('sheetbox').hidden=visible.length<2;
+  showSheet(first);
+ }catch(e){
+  if(request===importVersion)err('Could not open '+file.name+'. '+(e.message||'Check the file format.')+(fname?' The open file is still '+fname+'.':''));
+ }
 }
 $('open').onclick=()=>$('file').click();
 $('file').onchange=e=>{open_(e.target.files[0]);e.target.value=''};
@@ -365,22 +455,23 @@ $('sheet').onchange=pick;$('modeAll').onchange=$('modeCol').onchange=()=>{colMod
 $('reset').onclick=()=>{snap();R=cp(orig);ign=new Set();say('Reset to the original data.');audit();render()};
 $('undo').onclick=()=>{if(hist.length){const h=hist.pop();R=h.R;ign=h.ign;say('Undone.');audit();render()}};
 $('pgm').onclick=()=>{win=Math.max(0,win-300);render()};$('pgp').onclick=()=>{win+=300;render()};
-$('fixall').onclick=()=>{snap();let n=0;for(const id of['space','pfmt','empty','dup']){audit();const f=faults.find(x=>x.id===id);if(f){n+=f.count;fixType(f)}}
- audit();const left=faults.reduce((a,f)=>a+f.count,0);say(`Fixed ${n}. ${left?(n?'':'Nothing here can be fixed automatically. ')+'Still needs you: '+faults.map(f=>`${f.title} (${f.count})`).join(', ')+'. On each card, fix them one by one, fill them in, or mark them as reviewed.':'The sheet is clean.'}`);render()};
+$('fixall').onclick=()=>{snap();let n=0;for(const id of['space','pfmt','empty','dup']){audit();const f=faults.find(x=>x.id===id);if(f?.fix){n+=f.count;fixType(f)}}
+ audit();const left=faults.reduce((a,f)=>a+f.count,0);say(`Fixed ${n}. ${left?(n?'':'Nothing here can be fixed automatically. ')+'Still needs you: '+faults.map(f=>`${f.title} (${f.count})`).join(', ')+'. Open each card for details.':'The sheet is clean.'}`);render()};
 $('dl').onclick=()=>{
  try{
   saveState();
-  const wb=X.utils.book_new(),names=book?book.SheetNames:[curName||'Cleaned'];
-  names.forEach(nm=>{
-   const st=sheets.get(nm);
-   if(!st||!st.H.length){if(book&&book.Sheets[nm])X.utils.book_append_sheet(wb,book.Sheets[nm],nm);return}
-   X.utils.book_append_sheet(wb,buildSheet(st),nm.slice(0,31));
-  });
+  const wb=book?{...book,Sheets:{...book.Sheets}}:X.utils.book_new();
+  for(const [name,state] of sheets){
+   if(!state.H.length)continue;
+   const updated=buildSheet(state);
+   if(book)wb.Sheets[name]=updated;
+   else X.utils.book_append_sheet(wb,updated,name);
+  }
   X.writeFile(wb,(fname.replace(/\.(csv|xlsx)$/i,'')||'sheet')+'-cleaned.xlsx',{compression:true});
  }catch(e){err('Download failed. '+e.message)}
 };
 $('sample').onclick=()=>{
- if(!P){err('The phone library could not load. Connect to the internet and reload.');return}
+ if(!X||!P){err('A spreadsheet or phone library could not load. Connect to the internet and reload.');return}
  const rows=[
   ['Ali Khan','0300 1234567','ali@example.com','Lahore'],
   ['Ali  Khan ','+923001234567','ali@example.com','Lahore'],
@@ -391,6 +482,7 @@ $('sample').onclick=()=>{
   ['Mira Shah','03451234','mira@mail.com',''],
   ['Omar Farooq','0333-5551234','omar@mail.com','Islamabad'],
   ['omar farooq','03335551234','OMAR@mail.com','Islamabad']];
+ ++importVersion;workbookHasFormulas=false;hasHeadings=true;err('');
  fname='sample.xlsx';ws=null;startCol=0;rowBase=0;book=null;sheets.clear();curName='Sample';$('sheetbox').hidden=true;$('country').value=codes.has('PK')?'PK':$('country').value;
  load(['Name','Phone','Email','City'],rows,'Sample sheet');
 };
