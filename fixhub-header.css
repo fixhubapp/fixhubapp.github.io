@@ -1,0 +1,110 @@
+.fixhub-header {
+  background: #fff;
+  border-bottom: 1px solid #e6e1ee;
+}
+
+.fixhub-header__inner {
+  width: min(1180px, calc(100% - 40px));
+  margin-inline: auto;
+  padding-block: 12px;
+}
+
+.fixhub-header__brand {
+  display: inline-block;
+  color: #211b36;
+  font-size: clamp(1.8rem, 3vw, 2.1rem);
+  font-weight: 780;
+  letter-spacing: -.04em;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.fixhub-nav {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 3px;
+  margin-inline: -3px;
+  box-sizing: content-box;
+}
+
+.fixhub-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: min-content;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid #c7b9e6;
+  border-radius: 9px;
+  background: #faf8ff;
+  color: #42269e;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.15;
+  text-align: center;
+  text-decoration: none;
+  text-wrap: balance;
+}
+
+.fixhub-nav a:hover {
+  background: #f0eaff;
+}
+
+.fixhub-nav a[aria-current="page"] {
+  color: #fff;
+  background: #5737bf;
+  border-color: #5737bf;
+}
+
+.fixhub-header a:focus-visible {
+  outline: 2px solid #42269e;
+  outline-offset: 1px;
+}
+
+@media (max-width: 800px) {
+  .fixhub-header__inner {
+    width: calc(100% - 24px);
+  }
+}
+
+@media (max-width: 620px) {
+  .fixhub-nav {
+    gap: clamp(3px, 1vw, 6px);
+  }
+
+  .fixhub-nav a {
+    padding-inline: clamp(3px, 1vw, 6px);
+    font-size: .9rem;
+  }
+}
+
+@media (max-width: 395px) {
+  .fixhub-header__inner {
+    width: calc(100% - 16px);
+  }
+
+  .fixhub-nav {
+    gap: 3px;
+  }
+
+  .fixhub-nav a {
+    padding-inline: 2px;
+    font-size: .875rem;
+    letter-spacing: -.012em;
+  }
+}
+
+@media (max-width: 350px) {
+  .fixhub-nav {
+    gap: 2px;
+  }
+
+  .fixhub-nav a {
+    padding-inline: 1px;
+    font-size: .82rem;
+  }
+}
